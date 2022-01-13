@@ -1,0 +1,11 @@
+FROM golang:1.18-rc-alpine AS goBuilder
+
+WORKDIR /go/src/app
+ADD fullcycle-msg.go /go/src/app
+
+RUN go build fullcycle-msg.go
+
+FROM scratch
+
+COPY --from=goBuilder /go/src/app/fullcycle-msg /go/bin/fullcycle-msg
+ENTRYPOINT ["/go/bin/fullcycle-msg"]
